@@ -13,7 +13,7 @@ import cz.helu.helublocks.extension.extGetDrawable
 
 
 class GameBlockView @JvmOverloads constructor(context: Context, attrs: AttributeSet? = null, defStyleAttr: Int = 0) : View(context, attrs, defStyleAttr) {
-	private val gameBlock = GameBlock.createRandomBlock()
+	val gameBlock = GameBlock.createRandomBlock()
 	private var drawableWidth = 0f
 	private var drawableHeight = 0f
 	private val paintBlockBorder = Paint()

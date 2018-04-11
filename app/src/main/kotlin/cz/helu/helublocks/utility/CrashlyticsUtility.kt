@@ -5,17 +5,17 @@ import cz.helu.helublocks.HeluBlocksConfig
 
 
 object CrashlyticsUtility {
-//	fun setUserInformation(user: UserEntity?) {
-//		if (!HeluBlocksConfig.CRASHLYTICS)
-//			return
-//
-//		Crashlytics.setUserEmail(user?.email)
-//		Crashlytics.setUserName(user?.firstName + " " + user?.lastName)
-//		Crashlytics.setUserIdentifier(user?.id.toString())
-//		Crashlytics.setBool("SUBSCRIBED", UserManager.isUserSubscribed())
-//		Crashlytics.setBool("FB_LINKED", user?.isFbLinked == 1)
-//		Crashlytics.setString("FB_ID", user?.fbId ?: "null")
-//	}
+	//	fun setUserInformation(user: UserEntity?) {
+	//		if (!HeluBlocksConfig.CRASHLYTICS)
+	//			return
+	//
+	//		Crashlytics.setUserEmail(user?.email)
+	//		Crashlytics.setUserName(user?.firstName + " " + user?.lastName)
+	//		Crashlytics.setUserIdentifier(user?.id.toString())
+	//		Crashlytics.setBool("SUBSCRIBED", UserManager.isUserSubscribed())
+	//		Crashlytics.setBool("FB_LINKED", user?.isFbLinked == 1)
+	//		Crashlytics.setString("FB_ID", user?.fbId ?: "null")
+	//	}
 
 
 	fun setCurrentActivityKey(name: String) {

@@ -38,34 +38,18 @@
 				app:layout_constraintTop_toTopOf="parent" />
 
 			<LinearLayout
+				android:id="@+id/blocksContainer"
 				android:layout_width="0dp"
 				android:layout_height="0dp"
-				android:layout_marginEnd="20dp"
-				android:layout_marginStart="20dp"
+				android:layout_marginEnd="8dp"
+				android:layout_marginStart="8dp"
 				android:layout_marginTop="20dp"
 				android:orientation="horizontal"
 				android:gravity="center"
 				app:layout_constraintTop_toBottomOf="@+id/gameBoardView"
 				app:layout_constraintBottom_toBottomOf="parent"
 				app:layout_constraintStart_toStartOf="parent"
-				app:layout_constraintEnd_toEndOf="parent">
-
-				<cz.helu.helublocks.widget.GameBlockView
-					android:layout_width="0dp"
-					android:layout_height="50dp"
-					android:layout_weight="1"/>
-
-				<cz.helu.helublocks.widget.GameBlockView
-					android:layout_width="0dp"
-					android:layout_height="50dp"
-					android:layout_weight="1"/>
-
-				<cz.helu.helublocks.widget.GameBlockView
-					android:layout_width="0dp"
-					android:layout_height="50dp"
-					android:layout_weight="1"/>
-
-			</LinearLayout>
+				app:layout_constraintEnd_toEndOf="parent" />
 
 		</android.support.constraint.ConstraintLayout>
 	</org.alfonz.view.StatefulLayout>
