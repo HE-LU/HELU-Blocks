@@ -5,6 +5,7 @@ import android.content.ClipData
 import android.os.Bundle
 import android.view.*
 import android.widget.LinearLayout
+import cz.helu.helublocks.HeluBlocksConfig.COLUMN_COUNT
 import cz.helu.helublocks.R
 import cz.helu.helublocks.databinding.FragmentGameBinding
 import cz.helu.helublocks.entity.GameBlock
@@ -68,8 +69,8 @@ class GameFragment : BaseBindingFragment<GameViewModel, FragmentGameBinding>(), 
 		}
 
 		// TT Setup Drag listener for BlockContainer
-		binding.blocksContainer.setOnDragListener { _, event ->
-			when (event.action) {
+		val dragListener = View.OnDragListener { _, event ->
+			when (event?.action) {
 				DragEvent.ACTION_DROP -> {
 					val view = event.localState as View
 					view.visibility = View.VISIBLE
@@ -77,6 +78,9 @@ class GameFragment : BaseBindingFragment<GameViewModel, FragmentGameBinding>(), 
 			}
 			true
 		}
+
+		binding.blocksContainer.setOnDragListener(dragListener)
+		binding.container.setOnDragListener(dragListener)
 	}
 
 
@@ -94,7 +98,7 @@ class GameFragment : BaseBindingFragment<GameViewModel, FragmentGameBinding>(), 
 		newBlock.setOnTouchListener { view, event ->
 			if (event.action == MotionEvent.ACTION_DOWN) {
 				val blockPieceSize = view.width / GameBlock.MAX_BLOCK_SIZE
-				val gameBoardBlockPieceSize = binding.gameBoardView.width / viewModel.COLUMN_COUNT
+				val gameBoardBlockPieceSize = binding.gameBoardView.width / COLUMN_COUNT
 				val scale = gameBoardBlockPieceSize.toFloat() / blockPieceSize.toFloat()
 				view.extStartDragAndDrop(ClipData.newPlainText("", ""), GameBlockShadowBuilder(view, scale), view, 0)
 				view.visibility = View.INVISIBLE
@@ -110,7 +114,7 @@ class GameFragment : BaseBindingFragment<GameViewModel, FragmentGameBinding>(), 
 
 
 	private fun handleBlockDrop(block: GameBlock, x: Float, y: Float): Boolean {
-		val gameBoardBlockPieceSize = binding.gameBoardView.width / viewModel.COLUMN_COUNT
+		val gameBoardBlockPieceSize = binding.gameBoardView.width / COLUMN_COUNT
 
 		if (block.blockSize == 2) { // TT 2x2
 			// Tt this way we get the center position of drop.

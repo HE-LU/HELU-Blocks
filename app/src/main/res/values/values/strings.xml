@@ -14,4 +14,8 @@
 	<string name="global_message_not_implemented">This feature isn\'t implemented in this version. Please update to newest version of the app to see this content.</string>
 	<string name="global_video_load_error">Load Error</string>
 
+
+	<!-- TT Game screen -->
+	<string name="game_score">Score: %1$s</string>
+
 </resources>

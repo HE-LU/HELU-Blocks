@@ -7,6 +7,7 @@ import android.graphics.Paint
 import android.support.v4.content.ContextCompat
 import android.util.AttributeSet
 import android.view.View
+import cz.helu.helublocks.HeluBlocksConfig.COLUMN_COUNT
 import cz.helu.helublocks.R
 import cz.helu.helublocks.extension.extGetDrawable
 import cz.helu.helublocks.viewmodel.GameViewModel
@@ -58,13 +59,13 @@ class GameBoardView @JvmOverloads constructor(context: Context, attrs: Attribute
 			canvas.drawRect(0.0f, 0.0f, drawableWidth, drawableHeight, paintGameBoardBorder)
 
 			// Tt Draw grid lines
-			val step = drawableWidth / gameViewModel.COLUMN_COUNT
+			val step = drawableWidth / COLUMN_COUNT
 
-			for (x in 1 until gameViewModel.COLUMN_COUNT) {
+			for (x in 1 until COLUMN_COUNT) {
 				canvas.drawLine(x * step, 0.0f, x * step, drawableHeight, paintGameBoardGrid)
 			}
 
-			for (y in 1 until gameViewModel.COLUMN_COUNT) {
+			for (y in 1 until COLUMN_COUNT) {
 				canvas.drawLine(0.0f, y * step, drawableWidth, y * step, paintGameBoardGrid)
 			}
 		}
@@ -73,7 +74,7 @@ class GameBoardView @JvmOverloads constructor(context: Context, attrs: Attribute
 
 	private fun drawBlocks(canvas: Canvas) {
 		gameViewModel?.let { gameViewModel ->
-			val size = gameViewModel.COLUMN_COUNT
+			val size = COLUMN_COUNT
 			val step = drawableWidth / size
 
 			for (x in 0 until size) {

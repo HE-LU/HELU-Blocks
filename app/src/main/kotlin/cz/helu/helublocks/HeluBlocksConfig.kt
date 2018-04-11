@@ -9,4 +9,7 @@ object HeluBlocksConfig {
 	const val CRASHLYTICS = BuildConfig.CRASHLYTICS
 	const val SUPPORT_EMAIL = "support-blocks@helu.cz"
 	const val PREFS_NAME = "HeluBlocksPrefs"
+
+	// TT Game Board configuration
+	const val COLUMN_COUNT = 8
 }
