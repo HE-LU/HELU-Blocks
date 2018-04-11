@@ -73,10 +73,11 @@ class GameBoardView @JvmOverloads constructor(context: Context, attrs: Attribute
 
 	private fun drawBlocks(canvas: Canvas) {
 		gameViewModel?.let { gameViewModel ->
-			val step = drawableWidth / gameViewModel.COLUMN_COUNT
+			val size = gameViewModel.COLUMN_COUNT
+			val step = drawableWidth / size
 
-			for (x in 1 until gameViewModel.COLUMN_COUNT) {
-				for (y in 1 until gameViewModel.COLUMN_COUNT) {
+			for (x in 0 until size) {
+				for (y in 0 until size) {
 					if (gameViewModel.board[x][y] != null) {
 						val block = gameViewModel.board[x][y]
 						block?.let {
