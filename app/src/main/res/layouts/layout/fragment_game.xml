@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout
+	xmlns:android="http://schemas.android.com/apk/res/android"
+	xmlns:app="http://schemas.android.com/apk/res-auto">
+
+	<data>
+		<variable
+			name="view" type="cz.helu.helublocks.ui.GameView" />
+		<variable
+			name="viewModel" type="cz.helu.helublocks.viewmodel.GameViewModel" />
+	</data>
+
+	<org.alfonz.view.StatefulLayout
+		android:layout_width="match_parent"
+		android:layout_height="match_parent"
+		android:background="@color/backgroundPrimary"
+		app:state="@{viewModel.state}"
+		app:emptyLayout="@layout/placeholder_empty"
+		app:progressLayout="@layout/placeholder_progress"
+		app:offlineLayout="@layout/placeholder_offline">
+
+		<android.support.constraint.ConstraintLayout
+			android:id="@+id/container"
+			android:layout_width="match_parent"
+			android:layout_height="match_parent">
+
+			<cz.helu.helublocks.widget.GameBoardView
+				android:layout_width="0dp"
+				android:layout_height="0dp"
+				android:layout_marginEnd="20dp"
+				android:layout_marginStart="20dp"
+				android:layout_marginTop="20dp"
+				app:bindViewModel="@{viewModel}"
+				app:layout_constraintDimensionRatio="1:1"
+				app:layout_constraintEnd_toEndOf="parent"
+				app:layout_constraintStart_toStartOf="parent"
+				app:layout_constraintTop_toTopOf="parent" />
+
+		</android.support.constraint.ConstraintLayout>
+	</org.alfonz.view.StatefulLayout>
+</layout>

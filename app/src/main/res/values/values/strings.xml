@@ -1,0 +1,17 @@
+<resources>
+	<string name="app_store_uri" translatable="false">https://play.google.com/store/apps/details?id=%1$s</string>
+
+	<!-- Translate -->
+	<!-- TT GLOBAL -->
+	<string name="app_name">HELU-Blocks</string>
+
+	<string name="global_error">Something went wrong. Please try again later.</string>
+	<string name="global_network_offline">No or weak internet connection.\nCheck your connection and try again.</string>
+	<string name="global_empty_placeholder">No updates at the moment</string>
+	<string name="global_empty_standings_placeholder">Select a team from the menu to view Standings, Scores &amp; Schedules</string>
+	<string name="global_results">Results</string>
+	<string name="global_no_results">No results</string>
+	<string name="global_message_not_implemented">This feature isn\'t implemented in this version. Please update to newest version of the app to see this content.</string>
+	<string name="global_video_load_error">Load Error</string>
+
+</resources>

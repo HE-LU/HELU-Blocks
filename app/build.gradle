@@ -1,0 +1,209 @@
+final VERSION_MAJOR = 1 // max two digits
+final VERSION_MINOR = 0 // max two digits
+final VERSION_PATCH = 0 // max two digits
+
+
+apply plugin: 'com.android.application'
+apply plugin: 'io.fabric'
+apply plugin: 'kotlin-android'
+apply plugin: 'kotlin-android-extensions'
+apply plugin: 'kotlin-kapt'
+
+
+repositories {
+	jcenter()
+	maven {url 'https://maven.fabric.io/public'}
+	maven {url "https://jitpack.io"}
+}
+
+
+android {
+	compileSdkVersion 27
+	buildToolsVersion '27.0.3'
+
+
+	defaultConfig {
+		applicationId "cz.helu.helublocks"
+		targetSdkVersion 27
+		minSdkVersion 21
+		versionCode VERSION_MAJOR * 10000000 + VERSION_MINOR * 100000 + VERSION_PATCH * 1000
+		versionName "${VERSION_MAJOR}.${VERSION_MINOR}.${VERSION_PATCH}"
+	}
+
+
+	compileOptions {
+		sourceCompatibility JavaVersion.VERSION_1_8
+		targetCompatibility JavaVersion.VERSION_1_8
+	}
+
+
+	signingConfigs {
+		release {
+			// passwords and alias are obtained via askForPasswords task
+			storeFile file("../${project.property('keystore.file')}")
+			storePassword ""
+			keyAlias ""
+			keyPassword ""
+		}
+	}
+
+
+	buildTypes {
+		debug {
+			buildConfigField "boolean", "LOGS", "true"
+			buildConfigField "boolean", "DEV_ENVIRONMENT", "false"
+			buildConfigField "boolean", "CRASHLYTICS", "false"
+			minifyEnabled false
+			shrinkResources false
+			ext.enableCrashlytics = false
+			ext.alwaysUpdateBuildId = false
+			aaptOptions.cruncherEnabled = false
+			debuggable true
+			multiDexEnabled true
+		}
+		release {
+			buildConfigField "boolean", "LOGS", "false"
+			buildConfigField "boolean", "DEV_ENVIRONMENT", "false"
+			buildConfigField "boolean", "CRASHLYTICS", "true"
+			signingConfig signingConfigs.release
+			debuggable false
+			zipAlignEnabled true
+			minifyEnabled true
+			shrinkResources true
+			multiDexEnabled false
+			proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
+		}
+	}
+
+
+	sourceSets {
+		main.java.srcDirs += 'src/main/kotlin'
+		main.res.srcDirs =
+				[
+						'src/main/res',
+						'src/main/res/drawables',
+						'src/main/res/mipmaps',
+						'src/main/res/values',
+						'src/main/res/layouts',
+				]
+	}
+
+
+	applicationVariants.all {
+		variant ->
+			if(variant.buildType.name == "release")
+			{
+				renameArtifact(variant)
+			}
+	}
+
+
+	aaptOptions {
+		cruncherEnabled false
+	}
+
+
+	dexOptions {
+		preDexLibraries true
+		maxProcessCount 8
+		// Instead of setting the heap size for the DEX process, increase Gradle's
+		// heap size to enable dex-in-process. To learn more, read the next section.
+		// javaMaxHeapSize "2048m"
+	}
+
+
+	dataBinding {
+		enabled = true
+	}
+
+
+	packagingOptions {
+		exclude 'META-INF/rxjava.properties'
+	}
+
+
+	kapt {
+		generateStubs = true
+	}
+}
+
+
+dependencies {
+	implementation "com.akaita.java:rxjava2-debug:1.2.2"
+	implementation "com.android.support:appcompat-v7:27.0.2"
+	implementation "com.android.support:cardview-v7:27.0.2"
+	implementation "com.android.support:design:27.0.2"
+	implementation "com.android.support.constraint:constraint-layout:1.1.0-beta6"
+	implementation "com.android.support:support-v4:27.0.2"
+	implementation "com.android.support:support-v13:27.0.2"
+	implementation("com.crashlytics.sdk.android:crashlytics:2.9.1@aar") {transitive = true}
+	implementation "io.reactivex.rxjava2:rxandroid:2.0.1"
+	implementation "io.reactivex.rxjava2:rxjava:2.1.7"
+	implementation "io.reactivex.rxjava2:rxkotlin:2.0.3"
+	implementation "org.alfonz:alfonz-adapter:0.8.2"
+	implementation "org.alfonz:alfonz-arch:0.8.2"
+	implementation "org.alfonz:alfonz-rest:0.8.2"
+	implementation "org.alfonz:alfonz-rx:0.8.2"
+	implementation "org.alfonz:alfonz-utility:0.8.2"
+	implementation "org.alfonz:alfonz-view:0.8.2"
+	implementation "org.jetbrains.kotlin:kotlin-stdlib:$kotlin_version"
+	implementation "org.jetbrains.kotlinx:kotlinx-coroutines-android:0.22.2"
+
+	kapt "com.android.databinding:compiler:$gradle_plugin_version"
+
+	implementation fileTree(dir: 'libs', include: ['*.jar'])
+}
+
+
+def renameArtifact(variant)
+{
+	variant.outputs.all {
+		output ->
+			outputFileName = "theathletic-${variant.versionName}-${variant.name}.apk"
+	}
+}
+
+
+task askForPasswords << {
+	def storePass
+	def keyAlias
+	def keyPass
+
+	def keystorePropertiesFile = new File((String) project.property("keystore.properties"))
+
+	if(project.hasProperty("keystore.properties") && keystorePropertiesFile.exists())
+	{
+		println "Loading keystore passwords from property file..."
+		Properties properties = new Properties()
+		properties.load(new FileInputStream(keystorePropertiesFile))
+		storePass = properties['keystore.store.password']
+		keyAlias = properties['keystore.key.alias']
+		keyPass = properties['keystore.key.password']
+	}
+	else
+	{
+		println "Getting keystore passwords from user input..."
+		storePass = new String(System.console().readPassword("\nStore password: "))
+		keyAlias = new String(System.console().readLine("Key alias: "))
+		keyPass = new String(System.console().readPassword("Key password: "))
+	}
+
+	android.signingConfigs.release.storePassword = storePass
+	android.signingConfigs.release.keyAlias = keyAlias
+	android.signingConfigs.release.keyPassword = keyPass
+}
+
+
+tasks.whenTaskAdded {
+	theTask ->
+		if(theTask.name == "packageRelease")
+		{
+			theTask.dependsOn "askForPasswords"
+		}
+}
+
+
+crashlytics {
+	androidNdkOut 'src/main/obj'
+	androidNdkLibsOut 'src/main/libs'
+}
