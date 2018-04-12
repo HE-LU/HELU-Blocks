@@ -3,24 +3,20 @@ package cz.helu.helublocks.widget
 import android.content.Context
 import android.graphics.Canvas
 import android.graphics.Color
-import android.graphics.Paint
-import android.support.v4.content.ContextCompat
 import android.util.AttributeSet
 import android.view.View
-import cz.helu.helublocks.R
 import cz.helu.helublocks.entity.GameBlock
 import cz.helu.helublocks.extension.extGetDrawable
 
 
 class GameBlockView @JvmOverloads constructor(context: Context, attrs: AttributeSet? = null, defStyleAttr: Int = 0) : View(context, attrs, defStyleAttr) {
-	val gameBlock = GameBlock.createRandomBlock()
+	lateinit var gameBlock: GameBlock
 	private var drawableWidth = 0f
 	private var drawableHeight = 0f
-	private val paintBlockBorder = Paint()
 
 
-	init {
-		setupPaints()
+	constructor(context: Context, gameBlock: GameBlock) : this(context) {
+		this.gameBlock = gameBlock
 	}
 
 
@@ -50,27 +46,14 @@ class GameBlockView @JvmOverloads constructor(context: Context, attrs: Attribute
 
 		for (x in 0 until size) {
 			for (y in 0 until size) {
-				if (gameBlock.blockPieces[x][y] != null) {
-					val block = gameBlock.blockPieces[x][y]
-					block?.let {
-						val drawable = block.drawable.extGetDrawable()
-						drawable?.setBounds((offset + (y * step)).toInt(),
-								(offset + (x * step)).toInt(),
-								(offset + ((y + 1) * step)).toInt(),
-								(offset + ((x + 1) * step)).toInt())
-						drawable?.draw(canvas)
-					}
+				gameBlock.blockPieces[x][y]?.drawable?.extGetDrawable()?.let { blockDrawable ->
+					blockDrawable.setBounds((offset + (y * step)).toInt(),
+							(offset + (x * step)).toInt(),
+							(offset + ((y + 1) * step)).toInt(),
+							(offset + ((x + 1) * step)).toInt())
+					blockDrawable.draw(canvas)
 				}
 			}
 		}
-	}
-
-
-	private fun setupPaints() {
-		// Tt Game Board Border
-		paintBlockBorder.color = ContextCompat.getColor(context, R.color.game_board_border)
-		paintBlockBorder.style = Paint.Style.STROKE
-		paintBlockBorder.strokeWidth = resources.getDimensionPixelSize(R.dimen.game_block_border_thickness).toFloat()
-		paintBlockBorder.strokeCap = Paint.Cap.SQUARE
 	}
 }

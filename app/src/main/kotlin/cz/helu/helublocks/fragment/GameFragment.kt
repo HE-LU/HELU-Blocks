@@ -57,9 +57,12 @@ class GameFragment : BaseBindingFragment<GameViewModel, FragmentGameBinding>(), 
 					if (handleBlockDrop(view.gameBlock, event.x, event.y)) {
 						// Tt Remove block from blocksContainer layout
 						lastOwner.removeView(view)
+						viewModel.removeBlock(view.gameBlock)
 
 						// Tt Add new block!
 						addNewBlock()
+
+						viewModel.checkGameOver()
 					} else {
 						view.visibility = View.VISIBLE
 					}
@@ -87,7 +90,7 @@ class GameFragment : BaseBindingFragment<GameViewModel, FragmentGameBinding>(), 
 	@SuppressLint("ClickableViewAccessibility")
 	private fun addNewBlock() {
 		// TT Create block
-		val newBlock = GameBlockView(context)
+		val newBlock = GameBlockView(context, viewModel.getNewGameBlock())
 
 		// TT Set view layout params
 		val layoutParams = LinearLayout.LayoutParams(LinearLayout.LayoutParams.WRAP_CONTENT, LinearLayout.LayoutParams.WRAP_CONTENT, 1f)
@@ -118,8 +121,8 @@ class GameFragment : BaseBindingFragment<GameViewModel, FragmentGameBinding>(), 
 
 		if (block.blockSize == 2) { // TT 2x2
 			// Tt this way we get the center position of drop.
-			val posX = ((x - (gameBoardBlockPieceSize / 2)) / gameBoardBlockPieceSize).toInt()
-			val posY = ((y - (gameBoardBlockPieceSize / 2)) / gameBoardBlockPieceSize).toInt()
+			val posX = ((y - (gameBoardBlockPieceSize / 2)) / gameBoardBlockPieceSize).toInt()
+			val posY = ((x - (gameBoardBlockPieceSize / 2)) / gameBoardBlockPieceSize).toInt()
 
 			val wasAddSuccessful = viewModel.setGameBlock(block, posX, posY)
 
@@ -129,8 +132,8 @@ class GameFragment : BaseBindingFragment<GameViewModel, FragmentGameBinding>(), 
 			return wasAddSuccessful
 		} else { // TT 3x3
 			// Tt this way we get the center position of drop.
-			val posX = (x / gameBoardBlockPieceSize).toInt()
-			val posY = (y / gameBoardBlockPieceSize).toInt()
+			val posX = (y / gameBoardBlockPieceSize).toInt()
+			val posY = (x / gameBoardBlockPieceSize).toInt()
 
 			val wasAddSuccessful = viewModel.setGameBlock(block, posX, posY)
 

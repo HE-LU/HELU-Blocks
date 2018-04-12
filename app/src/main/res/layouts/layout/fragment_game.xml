@@ -29,7 +29,8 @@
 				android:id="@+id/textView"
 				android:layout_width="match_parent"
 				android:layout_height="wrap_content"
-				android:text="@{@string/game_score(viewModel.score)}"
+				android:text="@{(viewModel.gameOver == true) ? @string/game_score_game_over(viewModel.score) : @string/game_score(viewModel.score)}"
+				android:textColor="@{(viewModel.gameOver == true) ? @color/game_score_text_game_over : @color/game_score_text_normal}"
 				android:gravity="center"
 				android:textSize="40sp"
 				tools:text="Score 666" />

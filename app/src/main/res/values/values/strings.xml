@@ -16,6 +16,7 @@
 
 
 	<!-- TT Game screen -->
+	<string name="game_score_game_over">Game Over! Score: %1$s</string>
 	<string name="game_score">Score: %1$s</string>
 
 </resources>

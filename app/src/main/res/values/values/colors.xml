@@ -9,4 +9,6 @@
 	<color name="game_board_bg">#FFFFFF</color>
 	<color name="game_board_grid">#55666666</color>
 	<color name="game_board_border">#000000</color>
+	<color name="game_score_text_game_over">#FF0000</color>
+	<color name="game_score_text_normal">#363636</color>
 </resources>

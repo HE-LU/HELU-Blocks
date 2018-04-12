@@ -51,7 +51,7 @@ class GameBoardView @JvmOverloads constructor(context: Context, attrs: Attribute
 
 
 	private fun drawBackground(canvas: Canvas) {
-		gameViewModel?.let { gameViewModel ->
+		gameViewModel?.let {
 			// Tt Clear canvas
 			canvas.drawColor(ContextCompat.getColor(context, R.color.game_board_bg))
 
@@ -79,13 +79,9 @@ class GameBoardView @JvmOverloads constructor(context: Context, attrs: Attribute
 
 			for (x in 0 until size) {
 				for (y in 0 until size) {
-					if (gameViewModel.board[x][y] != null) {
-						val block = gameViewModel.board[x][y]
-						block?.let {
-							val drawable = block.drawable.extGetDrawable()
-							drawable?.setBounds((y * step).toInt(), (x * step).toInt(), ((y + 1) * step).toInt(), ((x + 1) * step).toInt())
-							drawable?.draw(canvas)
-						}
+					gameViewModel.board[x][y]?.drawable?.extGetDrawable()?.let { blockDrawable ->
+						blockDrawable.setBounds((y * step).toInt(), (x * step).toInt(), ((y + 1) * step).toInt(), ((x + 1) * step).toInt())
+						blockDrawable.draw(canvas)
 					}
 				}
 			}
