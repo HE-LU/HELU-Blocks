@@ -24,29 +24,21 @@ class GameViewModel() : BaseViewModel(), LifecycleObserver {
 	constructor(extras: Bundle?) : this()
 
 
-	fun setGameBlock(block: GameBlock, posX: Int, posY: Int): Boolean {
+	fun addGameBlock(block: GameBlock, posX: Int, posY: Int): Boolean {
 		if (canBlockBePlaced(block, posX, posY)) {
-			if (block.blockSize == 2) { // TT 2x2
-				// Tt Now we can safely save the block into board
-				for (x in 0 until block.blockSize) {
-					for (y in 0 until block.blockSize) {
-						if (block.blockPieces[x][y] != null)
-							board[posX + x][posY + y] = block.blockPieces[x][y]
-					}
-				}
-			} else { // TT 3x3
-				// Tt Now we can safely save the block into board
-				for (x in 0 until block.blockSize) {
-					for (y in 0 until block.blockSize) {
-						if (block.blockPieces[x][y] != null)
-							board[posX + x - 1][posY + y - 1] = block.blockPieces[x][y]
-					}
+			// Tt Now we can safely save the block into board
+			for (x in 0 until block.blockSizeX) {
+				for (y in 0 until block.blockSizeY) {
+					if (block.blockPieces[x][y] != null)
+						board[posX + x][posY + y] = block.blockPieces[x][y]
 				}
 			}
 
 			checkFilled()
+
+			return true
 		}
-		return true
+		return false
 	}
 
 
@@ -117,28 +109,14 @@ class GameViewModel() : BaseViewModel(), LifecycleObserver {
 
 
 	private fun canBlockBePlaced(block: GameBlock, posX: Int, posY: Int): Boolean {
-		if (block.blockSize == 2) { // TT 2x2
-			// Tt First just check if we can put down the block
-			for (x in 0 until block.blockSize) {
-				for (y in 0 until block.blockSize) {
-					if (block.blockPieces[x][y] != null) {
-						if (posX + x < 0 || posX + x >= COLUMN_COUNT || posY + y < 0 || posY + y >= COLUMN_COUNT)
-							return false
-						if (block.blockPieces[x][y] != null && board[posX + x][posY + y] != null)
-							return false
-					}
-				}
-			}
-		} else { // TT 3x3
-			// Tt First just check if we can put down the block
-			for (x in 0 until block.blockSize) {
-				for (y in 0 until block.blockSize) {
-					if (block.blockPieces[x][y] != null) {
-						if (posX + x - 1 < 0 || posX + x > COLUMN_COUNT || posY + y - 1 < 0 || posY + y > COLUMN_COUNT)
-							return false
-						if (block.blockPieces[x][y] != null && board[posX + x - 1][posY + y - 1] != null)
-							return false
-					}
+		// Tt First just check if we can put down the block
+		for (x in 0 until block.blockSizeX) {
+			for (y in 0 until block.blockSizeY) {
+				if (block.blockPieces[x][y] != null) {
+					if (posX + x < 0 || posX + x >= COLUMN_COUNT || posY + y < 0 || posY + y >= COLUMN_COUNT)
+						return false
+					if (block.blockPieces[x][y] != null && board[posX + x][posY + y] != null)
+						return false
 				}
 			}
 		}

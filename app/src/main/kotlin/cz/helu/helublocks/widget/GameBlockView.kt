@@ -40,17 +40,19 @@ class GameBlockView @JvmOverloads constructor(context: Context, attrs: Attribute
 
 	private fun drawBlock(canvas: Canvas) {
 		val blockSize = GameBlock.MAX_BLOCK_SIZE
-		val size = gameBlock.blockSize
+		val sizeX = gameBlock.blockSizeX
+		val sizeY = gameBlock.blockSizeY
 		val step = drawableWidth / blockSize
-		val offset = (blockSize - size) * step / 2
+		val offsetX = (blockSize - sizeX) * step / 2
+		val offsetY = (blockSize - sizeY) * step / 2
 
-		for (x in 0 until size) {
-			for (y in 0 until size) {
+		for (x in 0 until sizeX) {
+			for (y in 0 until sizeY) {
 				gameBlock.blockPieces[x][y]?.drawable?.extGetDrawable()?.let { blockDrawable ->
-					blockDrawable.setBounds((offset + (y * step)).toInt(),
-							(offset + (x * step)).toInt(),
-							(offset + ((y + 1) * step)).toInt(),
-							(offset + ((x + 1) * step)).toInt())
+					blockDrawable.setBounds((offsetY + (y * step)).toInt(),
+							(offsetX + (x * step)).toInt(),
+							(offsetY + ((y + 1) * step)).toInt(),
+							(offsetX + ((x + 1) * step)).toInt())
 					blockDrawable.draw(canvas)
 				}
 			}

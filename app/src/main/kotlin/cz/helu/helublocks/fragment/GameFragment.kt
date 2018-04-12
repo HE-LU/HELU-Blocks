@@ -16,6 +16,7 @@ import cz.helu.helublocks.viewmodel.GameViewModel
 import cz.helu.helublocks.widget.GameBlockShadowBuilder
 import cz.helu.helublocks.widget.GameBlockView
 import extStartDragAndDrop
+import kotlin.math.roundToInt
 
 
 class GameFragment : BaseBindingFragment<GameViewModel, FragmentGameBinding>(), GameView {
@@ -119,28 +120,16 @@ class GameFragment : BaseBindingFragment<GameViewModel, FragmentGameBinding>(), 
 	private fun handleBlockDrop(block: GameBlock, x: Float, y: Float): Boolean {
 		val gameBoardBlockPieceSize = binding.gameBoardView.width / COLUMN_COUNT
 
-		if (block.blockSize == 2) { // TT 2x2
-			// Tt this way we get the center position of drop.
-			val posX = ((y - (gameBoardBlockPieceSize / 2)) / gameBoardBlockPieceSize).toInt()
-			val posY = ((x - (gameBoardBlockPieceSize / 2)) / gameBoardBlockPieceSize).toInt()
+		// Tt this way we get the center position of drop.
+		val posX = ((y - (block.blockSizeX * 0.5f * gameBoardBlockPieceSize)) / gameBoardBlockPieceSize).roundToInt()
+		val posY = ((x - (block.blockSizeY * 0.5f * gameBoardBlockPieceSize)) / gameBoardBlockPieceSize).roundToInt()
 
-			val wasAddSuccessful = viewModel.setGameBlock(block, posX, posY)
+		// Tt Add block into board
+		val wasAddSuccessful = viewModel.addGameBlock(block, posX, posY)
 
-			// Tt Redraw the gameBoardView
-			binding.gameBoardView.invalidate()
+		// Tt Redraw the gameBoardView
+		binding.gameBoardView.invalidate()
 
-			return wasAddSuccessful
-		} else { // TT 3x3
-			// Tt this way we get the center position of drop.
-			val posX = (y / gameBoardBlockPieceSize).toInt()
-			val posY = (x / gameBoardBlockPieceSize).toInt()
-
-			val wasAddSuccessful = viewModel.setGameBlock(block, posX, posY)
-
-			// Tt Redraw the gameBoardView
-			binding.gameBoardView.invalidate()
-
-			return wasAddSuccessful
-		}
+		return wasAddSuccessful
 	}
 }
